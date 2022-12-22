@@ -1,25 +1,47 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import { useState, useEffect } from "react";
 import "./styleData.css";
 
 const DataList = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+
+  const [data, setData] = useState({});
 
   const fetchData = () => {
     const dataFromBackend = [
       { user: "maral", score: 1 },
       { user: "maral", score: 15 },
       { user: "ata", score: 3 },
-      { user: "ata", score: 7 },
-      { user: "omid", score: 5 },
-      { user: "omid", score: 105 },
+      // { user: "ata", score: 7 },
+      { user: "ata", score: 8 },
       { user: "maral", score: 1 },
     ];
-    setData(dataFromBackend);
+
+    const scores = {};
+
+    dataFromBackend.forEach((i) => {
+      if (scores[i.user]) {
+        scores[i.user] = [...scores[i.user], i.score];
+      } else {
+        scores[i.user] = [i.score];
+      }
+    });
+
+    /**
+     scores = {
+      maral: [1, 15, 1],
+      ata: [3,7,8],
+      omid: [5,10,4]
+     }
+     */
+
+    setData(scores);
   };
 
-  fetchData();
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="container">
@@ -62,27 +84,30 @@ const DataList = () => {
           </div>
         </nav>
       </header>
-
       <br />
-      <table>
-        <tr>
-          {Object.keys(data[0]).map((key) => {
-            return <tr>{key}</tr>;
-          })}
-        </tr>
-        {data.map((item) => {
-          return (
-            <tr>
-              {Object.values(item).map((val) => {
-                return <td>{val}</td>;
-              })}
-            </tr>
-          );
-        })}
-      </table>
-
-      <Outlet />
-      <div></div>
+      <div>
+        <table>
+          <tr>
+            <td>User</td>
+            {(Object.values(data)[0] || []).map((_, index) => {
+              console.log("index", index);
+              console.log("data", data);
+              return <td>{`Game ${index + 1}`}</td>;
+            })}
+          </tr>
+          {Object.values(data) // Object.values(data) -> [[1, 15, 1],[3,7,8],[5,10,4]]
+            .map((itm, indx) => {
+              return (
+                <tr>
+                  <td>{Object.keys(data)[indx]}</td>
+                  {itm.map((x) => (
+                    <td>{x}</td>
+                  ))}
+                </tr>
+              );
+            })}
+        </table>
+      </div>
     </div>
   );
 };

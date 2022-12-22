@@ -17,16 +17,15 @@
 }
 
 table {
-    width: auto;
+    width: 90vw;
     padding: 5px;
-    margin: 5px;
+    margin: auto;
 }
 
 table, th, td {
     border-radius: 15px 3px;
     border: 1px solid #468499;
     padding: 15px;
-    margin: 5px;
 }
 
 .btn {

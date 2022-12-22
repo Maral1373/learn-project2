@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import User from "./components/user/user";
 import Home from "./components/home/home";
 import Score from "./components/score/score";
+import Game from "./components/game/game";
 import DataList from "./components/dataList/dataList";
 import Tab1 from "./components/tab1";
 import Tab2 from "./components/tab2";
@@ -27,8 +28,8 @@ root.render(
         <Route path="/" element={<Home />} />
         <Route path="/user" element={<User />} />
         <Route path="/table" element={<Table />} />
-
         <Route path="/score" element={<Score />} />
+        <Route path="/game" element={<Game />} />
         <Route path="/dataList" element={<DataList />}>
           <Route path="tab1" element={<Tab1 />} />
           <Route path="tab2" element={<Tab2 />} />

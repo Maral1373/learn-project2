@@ -1,25 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const User = () => {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const Game = () => {
+  const [userId, setUserId] = useState("");
+  const [players, setPlayers] = useState("");
 
   const navigate = useNavigate();
 
   const onChange = (e) => {
-    if (e.target.name === "username") {
-      setUsername(e.target.value);
-    } else if (e.target.name === "password") {
-      setPassword(e.target.value);
-    } else if (e.target.name === "name") {
-      setName(e.target.value);
+    if (e.target.name === "userId") {
+      setUserId(e.target.value);
+    } else if (e.target.name === "players") {
+      setPlayers(e.target.value);
     }
   };
 
-  const registerUser = async () => {
-    const request = await fetch("http://127.0.0.1:4000/users", {
+  const createGame = async () => {
+    const request = await fetch("http://127.0.0.1:4000/games", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -27,9 +24,8 @@ const User = () => {
       method: "POST",
       mode: "cors",
       body: JSON.stringify({
-        name,
-        username,
-        password,
+        user_id: userId,
+        players: players.replace(/ /g, "").split(","),
       }),
     });
     const result = await request.json();
@@ -38,12 +34,12 @@ const User = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    registerUser();
+    createGame();
   };
 
   return (
     <>
-      <h1>User page</h1>
+      <h1>Create Game</h1>
       <div className="container-btn">
         <button
           className="btn"
@@ -80,35 +76,27 @@ const User = () => {
       </div>
       <main>
         <form onSubmit={onSubmit}>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="userId">User ID</label>
           <input
             type="text"
-            name="name"
-            id="name"
-            value={name}
+            name="userId"
+            id="userId"
+            value={userId}
             onChange={onChange}
           />
-          <label htmlFor="username">Username</label>
+          <label htmlFor="players">Players</label>
           <input
             type="text"
-            name="username"
-            id="username"
-            value={username}
+            name="players"
+            id="players"
+            value={players}
             onChange={onChange}
           />
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={onChange}
-          />
-          <input type="submit" value="Register" />
+          <input type="submit" value="Create Game" />
         </form>
       </main>
     </>
   );
 };
 
-export default User;
+export default Game;
